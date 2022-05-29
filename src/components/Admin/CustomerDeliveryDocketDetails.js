@@ -3,63 +3,91 @@ import "antd/dist/antd.css";
 import axios from "axios";
 import { Table } from "antd";
 import { useRecoilState } from "recoil";
-import { localtionCustomerState } from "../Store/recoil";
-import { customersState } from "../Store/recoil";
-import { employeesState } from "../Store/recoil";
+import { localtionCustomerDocketDetailsState } from "../Store/recoil";
+import { customersDetailState } from "../Store/recoil";
+import { productState } from "../Store/recoil";
 
 function CustomerDeliveryDocketDetails(props) {
-  const [customers, setCustomers] = useRecoilState(customersState);
-  const [localtionCustomer, setLocaltionCustomer] = useRecoilState(
-    localtionCustomerState
+  const [localtionCustomerDocketDetails, setLocaltionCustomerDocketDetail] =
+    useRecoilState(localtionCustomerDocketDetailsState);
+
+  const [products, setProducts] = useRecoilState(productState);
+
+  const [customersDetail, setCustomersDetailState] =
+    useRecoilState(customersDetailState);
+
+  console.log(
+    customersDetail[localtionCustomerDocketDetails].deliveryDocketDetails
   );
 
-  const [employees, setEmployees] = useRecoilState(employeesState);
+  const listIdDeliveryDocketDetails = [];
+  customersDetail[localtionCustomerDocketDetails].deliveryDocketDetails.forEach(
+    (idDeliveryDocketDetails) => {
+      listIdDeliveryDocketDetails.push(idDeliveryDocketDetails.productId);
+    }
+  );
 
-  const listIdDeliveryDocket = [];
-  customers[localtionCustomer].deliveryDockets.forEach((deliveryDocket) => {
-    listIdDeliveryDocket.push(deliveryDocket.id);
-  });
-
-  const listEmployees = [];
-  for (let i = 0; i < employees.length; i++) {
-    for (let j = 0; j < listIdDeliveryDocket.length; j++) {
-      if (employees[i].id === listIdDeliveryDocket[j]) {
-        listEmployees.push(employees[i]);
+  const listDeliveryDocketDetails = [];
+  for (let i = 0; i < products.length; i++) {
+    for (let j = 0; j < listIdDeliveryDocketDetails.length; j++) {
+      if (products[i].id === listIdDeliveryDocketDetails[j]) {
+        listDeliveryDocketDetails.push(products[i]);
       }
     }
   }
 
-  const dataSource = listEmployees.map((employee, index) => {
-    return {
-      employeeId: employee.id,
-      name: employee.fullName,
-      id: customers[localtionCustomer].deliveryDockets[index].id,
-      createdAt: customers[localtionCustomer].deliveryDockets[index].createdAt,
-    };
-  });
-
   const columns = [
     {
-      title: "Mã phiếu xuất",
+      title: "Mã phiếu xuất chi tiết",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Mã nhân viên",
-      dataIndex: "employeeId",
-      key: "employeeId",
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
     },
     {
-      title: "Ngày tạo",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
     },
     {
-      title: "Tên nhân viên",
+      title: "Tên sản phẩm",
       dataIndex: "name",
       key: "name",
     },
+    {
+      title: "Mã sản phẩm",
+      dataIndex: "productId",
+      key: "productId",
+    },
+    {
+      title: "Hình ảnh",
+      dataIndex: "image",
+      key: "image",
+    },
   ];
+
+  const dataSource = listDeliveryDocketDetails.map((data, index) => {
+    return {
+      name: data.name,
+      productId: data.id,
+      image: data.image,
+      id: customersDetail[localtionCustomerDocketDetails].deliveryDocketDetails[
+        index
+      ].id,
+      quantity:
+        customersDetail[localtionCustomerDocketDetails].deliveryDocketDetails[
+          index
+        ].quantity,
+      price:
+        customersDetail[localtionCustomerDocketDetails].deliveryDocketDetails[
+          index
+        ].price,
+    };
+  });
+
   return (
     <div>
       <Table columns={columns} dataSource={dataSource} />

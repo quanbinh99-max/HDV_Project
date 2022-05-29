@@ -24,6 +24,11 @@ export const localtionCustomerState = atom({
   default: 0, // default value (aka initial value)
 });
 
+export const localtionCustomerDocketDetailsState = atom({
+  key: "localtionCustomerDocketDetailsState",
+  default: 0, // default value (aka initial value)
+});
+
 export const productState = atom({
   key: "productState", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
@@ -31,6 +36,11 @@ export const productState = atom({
 
 export const customersState = atom({
   key: "customersState", // unique ID (with respect to other atoms/selectors)
+  default: [], // default value (aka initial value)
+});
+
+export const customersDetailState = atom({
+  key: "customersDetailState", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
 });
 

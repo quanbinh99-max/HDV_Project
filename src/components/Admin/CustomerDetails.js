@@ -5,15 +5,22 @@ import { Table } from "antd";
 import { useRecoilState } from "recoil";
 import { localtionCustomerState } from "../Store/recoil";
 import { customersState } from "../Store/recoil";
+import { customersDetailState } from "../Store/recoil";
+import { localtionCustomerDocketDetailsState } from "../Store/recoil";
 import { employeesState } from "../Store/recoil";
+import { tabState } from "../Store/recoil";
 
 function CustomerDetails(props) {
   const [customers, setCustomers] = useRecoilState(customersState);
+  const [localtionCustomerDocketDetails, setLocaltionCustomerDocketDetails] =
+    useRecoilState(localtionCustomerDocketDetailsState);
   const [localtionCustomer, setLocaltionCustomer] = useRecoilState(
     localtionCustomerState
   );
-
+  const [tab, setTab] = useRecoilState(tabState);
   const [employees, setEmployees] = useRecoilState(employeesState);
+  const [customersDetail, setCustomersDetailState] =
+    useRecoilState(customersDetailState);
 
   const listIdDeliveryDocket = [];
   customers[localtionCustomer].deliveryDockets.forEach((deliveryDocket) => {
@@ -38,11 +45,35 @@ function CustomerDetails(props) {
     };
   });
 
+  useEffect(() => {
+    setCustomersDetailState(customers[localtionCustomer].deliveryDockets);
+  }, []);
+
+  const findIndex = (id, employees) => {
+    return employees
+      .map((employee) => {
+        return employee.id;
+      })
+      .indexOf(id);
+  };
+
   const columns = [
     {
       title: "Mã phiếu xuất",
       dataIndex: "id",
       key: "id",
+      render: (text) => (
+        <h1
+          onClick={() => {
+            setLocaltionCustomerDocketDetails(
+              findIndex(Number(text), listEmployees)
+            );
+            setTab(8);
+          }}
+        >
+          {text}
+        </h1>
+      ),
     },
     {
       title: "Mã nhân viên",
