@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { message } from "antd";
+import { useRecoilState } from "recoil";
+import { key } from "../Store/recoil";
+import { profileEmployeeState } from "../Store/recoil";
 import "antd/dist/antd.css";
+import { useNavigate } from "react-router-dom";
+
 function Login(props) {
+  const [keyValue, setKeyValue] = useRecoilState(key);
+  const [profileEmployee, setProfileEmployee] =
+    useRecoilState(profileEmployeeState);
+  let navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -26,7 +35,11 @@ function Login(props) {
           `https://shoesstation.herokuapp.com/api/employees/login?phoneNumber=${data.username}&password=${data.password}`
         );
         if (response.status === 200) {
+          setProfileEmployee(response.data);
+          localStorage.setItem("key", "123");
+          setKeyValue(localStorage.getItem("key"));
           success();
+          navigate("/admin");
         }
       } catch (e) {
         error();

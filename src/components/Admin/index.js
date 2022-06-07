@@ -8,14 +8,29 @@ import DeliveryDocketDetails from "./DeliveryDocketDetails";
 import ReceivedDocketDetails from "./ReceivedDocketDetails";
 import CustomerDetails from "./CustomerDetails";
 import Customers from "./Customers";
+import DeliveryDocket from "./DeliveryDocket";
 import CustomerDeliveryDocketDetails from "./CustomerDeliveryDocketDetails";
+import CreateReceiveDocket from "./CreateReceiveDocket";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 import { tabState } from "../Store/recoil";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
+import { key } from "../Store/recoil";
+import ProfileEmployee from "./ProfileEmployee";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 function Index(props) {
   const [tab, setTab] = useRecoilState(tabState);
+  let navigate = useNavigate();
+  const [keyValue, setKeyValue] = useRecoilState(key);
+
+  const handleLogout = () => {
+    localStorage.removeItem("key");
+    setKeyValue(localStorage.getItem("key") || []);
+    navigate("/dangnhap");
+  };
 
   function getItem(label, key, icon, children) {
     return {
@@ -33,6 +48,9 @@ function Index(props) {
     getItem("Products", "1", <PieChartOutlined />),
     getItem("Employees", "2", <DesktopOutlined />),
     getItem("Customers", "6", <DesktopOutlined />),
+    getItem("Delivery Docket", "9", <DesktopOutlined />),
+    getItem("Receive Docket", "11", <DesktopOutlined />),
+    getItem("Profile Employees", "12", <DesktopOutlined />),
   ];
 
   // const items = [UserOutlined, UserOutlined].map((icon, index) => ({
@@ -77,7 +95,13 @@ function Index(props) {
             style={{
               padding: 0,
             }}
-          />
+          >
+            <div className="flex justify-end mt-4 mr-4">
+              <Button type="primary" onClick={handleLogout}>
+                <span>Đăng xuất</span>
+              </Button>
+            </div>
+          </Header>
           <Content
             style={{
               margin: "24px 16px 0",
@@ -101,6 +125,9 @@ function Index(props) {
               {tab === 8 && (
                 <CustomerDeliveryDocketDetails></CustomerDeliveryDocketDetails>
               )}
+              {tab === 9 && <DeliveryDocket></DeliveryDocket>}
+              {tab === 11 && <CreateReceiveDocket></CreateReceiveDocket>}
+              {tab === 12 && <ProfileEmployee></ProfileEmployee>}
             </div>
           </Content>
           <Footer

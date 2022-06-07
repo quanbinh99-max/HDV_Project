@@ -1,25 +1,55 @@
 import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
-import { Table } from "antd";
+import AddProduct from "./AddProduct";
+import { Table, Button } from "antd";
 import { useRecoilState } from "recoil";
 import { productState } from "../Store/recoil";
+import EditProduct from "./EditProduct";
 
 function Products(props) {
   const [products, setProducts] = useRecoilState(productState);
+  const [product, setProduct] = useState();
+  const [toggleAdd, setToggleAdd] = useState(false);
+  const [toggleEdit, setToggleEdit] = useState(false);
+
+  const getProducts = async () => {
+    try {
+      const response = await axios.get(
+        "https://shoesstation.herokuapp.com/api/products"
+      );
+      setProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const response = await axios.get(
-          "https://shoesstation.herokuapp.com/api/products"
-        );
-        setProducts(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getProducts();
   }, []);
+
+  const handleDelete = (text, record) => {
+    const deleteProducts = async () => {
+      try {
+        const response = await axios.put(
+          `https://shoesstation.herokuapp.com/api/products/${record.id}`,
+          { ...record, status: 0 }
+        );
+        getProducts();
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    deleteProducts();
+  };
+
+  const handleEdit = (text, record) => {
+    setToggleEdit(true);
+    setProduct(record);
+  };
+
+  const handleToggleAdd = () => {
+    setToggleAdd(!toggleAdd);
+  };
 
   const columns = [
     {
@@ -56,12 +86,55 @@ function Products(props) {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
+      render: (text) => <img src={text} className="w-[100px]" />,
+    },
+    {
+      title: "Delete",
+      key: "delete",
+      fixed: "right",
+      width: 100,
+      render: (text, record) => (
+        <Button type="primary" onClick={() => handleDelete(text, record)}>
+          Delete
+        </Button>
+      ),
+    },
+    {
+      title: "Edit",
+      key: "edit",
+      fixed: "right",
+      width: 100,
+      render: (text, record) => (
+        <Button type="primary" onClick={() => handleEdit(text, record)}>
+          Edit
+        </Button>
+      ),
     },
   ];
 
   return (
     <div>
-      <Table columns={columns} dataSource={products} />
+      <Button type="primary" className="mb-10" onClick={handleToggleAdd}>
+        Thêm sản phẩm
+      </Button>
+      <Table
+        columns={columns}
+        dataSource={products.filter((product) => {
+          return product.status === 1;
+        })}
+      ></Table>
+      {toggleAdd === true && (
+        <AddProduct products={products} setProducts={setProducts}></AddProduct>
+      )}
+      {toggleEdit === true && (
+        <EditProduct
+          products={products}
+          setProducts={setProducts}
+          product={product}
+          getProducts={getProducts}
+          setToggleEdit={setToggleEdit}
+        ></EditProduct>
+      )}
     </div>
   );
 }
