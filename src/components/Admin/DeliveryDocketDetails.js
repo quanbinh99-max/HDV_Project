@@ -17,6 +17,9 @@ function DeliveryDocketDetails(props) {
     localtionDeliveryDocketState
   );
 
+  console.log(deliveryDockets);
+  console.log(localtionDeliveryDocket);
+
   let listIdDeliveryDocket = [];
   deliveryDockets[localtionDeliveryDocket].deliveryDocketDetails.map(
     (deliveryDocketDetail) => {

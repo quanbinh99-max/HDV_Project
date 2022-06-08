@@ -4,8 +4,12 @@ import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { Form, Input, Button, Space } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { profileEmployeeState } from "../Store/recoil";
+import { useRecoilState } from "recoil";
 
 function CreateReceiveDocket(props) {
+  const [profileEmployee, setProfileEmployee] =
+    useRecoilState(profileEmployeeState);
   const onFinish = (values) => {
     const postReceiveDocket = async () => {
       try {
@@ -13,7 +17,7 @@ function CreateReceiveDocket(props) {
           "https://shoesstation.herokuapp.com/api/deliveryDockets",
           {
             customerId: selectedOptionCustoms.value,
-            employeeId: selectedOptionEmployees.value,
+            employeeId: profileEmployee.id,
           }
         );
         console.log(response);
@@ -78,12 +82,14 @@ function CreateReceiveDocket(props) {
 
   var optionsCustomers = [];
   if (customers.length !== 0) {
-    optionsCustomers = customers.map((customer) => {
-      return {
-        value: customer.id,
-        label: customer.fullName,
-      };
-    });
+    optionsCustomers = customers
+      .filter((customer) => customer.status === 1)
+      .map((customer) => {
+        return {
+          value: customer.id,
+          label: customer.fullName,
+        };
+      });
   }
 
   useEffect(() => {
@@ -102,12 +108,14 @@ function CreateReceiveDocket(props) {
 
   var optionsProducts = [];
   if (products.length !== 0) {
-    optionsProducts = products.map((product) => {
-      return {
-        value: product.id,
-        label: product.name,
-      };
-    });
+    optionsProducts = products
+      .filter((product) => product.status === 1)
+      .map((product) => {
+        return {
+          value: product.id,
+          label: product.name,
+        };
+      });
   }
   const [selectedOptionEmployees, setSelectedOptionEmployees] = useState(null);
   const [selectedOptionCustoms, setSelectedOptionCustoms] = useState(null);
@@ -121,17 +129,8 @@ function CreateReceiveDocket(props) {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <div className="flex">
-          <span>Chọn nhân viên : </span>
-          <Select
-            className="flex-1 ml-4"
-            defaultValue={selectedOptionEmployees}
-            onChange={setSelectedOptionEmployees}
-            options={optionsEmployee}
-          />
-        </div>
-        <div className="flex">
-          <span>Chọn khách hàng</span>
+        <div className="flex items-center">
+          <span>Chọn khách hàng : </span>
           <Select
             className="flex-1 ml-3 mt-4 mb-4"
             defaultValue={selectedOptionCustoms}

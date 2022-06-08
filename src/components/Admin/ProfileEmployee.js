@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 function ProfileEmployee(props) {
   const [profileEmployee, setProfileEmployee] =
     useRecoilState(profileEmployeeState);
-  console.log(profileEmployee);
+
   return (
     <div className="">
       <div>

@@ -4,8 +4,12 @@ import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { Form, Input, Button, Space } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { profileEmployeeState } from "../Store/recoil";
+import { useRecoilState } from "recoil";
 
 function CreateReceiveDocket(props) {
+  const [profileEmployee, setProfileEmployee] =
+    useRecoilState(profileEmployeeState);
   const onFinish = (values) => {
     const postReceiveDocket = async () => {
       try {
@@ -13,7 +17,7 @@ function CreateReceiveDocket(props) {
           "https://shoesstation.herokuapp.com/api/receivedDockets",
           {
             supplierName: values.supplierName,
-            employeeId: selectedOptionEmployees.value,
+            employeeId: profileEmployee.id,
           }
         );
         console.log(response);
@@ -77,12 +81,14 @@ function CreateReceiveDocket(props) {
 
   var optionsProducts = [];
   if (products.length !== 0) {
-    optionsProducts = products.map((product) => {
-      return {
-        value: product.id,
-        label: product.name,
-      };
-    });
+    optionsProducts = products
+      .filter((customer) => customer.status === 1)
+      .map((product) => {
+        return {
+          value: product.id,
+          label: product.name,
+        };
+      });
   }
   const [selectedOptionEmployees, setSelectedOptionEmployees] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState(null);
@@ -95,15 +101,6 @@ function CreateReceiveDocket(props) {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <div className="form-group flex">
-          <h3>Chọn nhân viên : </h3>
-          <Select
-            defaultValue={selectedOptionEmployees}
-            onChange={setSelectedOptionEmployees}
-            options={optionsEmployee}
-            className="ml-2 flex-1 mb-2"
-          />
-        </div>
         <div className="flex">
           <h3 className="mr-5">supplierName: </h3>
           <Form.Item

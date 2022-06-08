@@ -68,9 +68,10 @@ function EmployeeDetail(props) {
         }
       }
     }
+
     dataDelivery = listCustomer.map((customer, index) => {
       return {
-        id: customer.id,
+        id: deliveryDocket[index].id,
         createdAt: deliveryDocket[index].createdAt,
         customer: customer.fullName,
         customerId: customer.id,
