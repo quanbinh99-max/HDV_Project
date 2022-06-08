@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import axios from "axios";
 import AddProduct from "./AddProduct";
-import { Table, Button } from "antd";
+import { Table, Button, Popconfirm, message } from "antd";
 import { useRecoilState } from "recoil";
 import { productState } from "../Store/recoil";
 import EditProduct from "./EditProduct";
@@ -39,7 +39,18 @@ function Products(props) {
         console.log(e);
       }
     };
+
     deleteProducts();
+  };
+
+  const confirm = (text, record) => {
+    handleDelete(text, record);
+    message.success("Xóa thành công");
+  };
+
+  const cancel = (e) => {
+    console.log(e);
+    message.error("Hủy xóa");
   };
 
   const handleEdit = (text, record) => {
@@ -94,9 +105,15 @@ function Products(props) {
       fixed: "right",
       width: 100,
       render: (text, record) => (
-        <Button type="primary" onClick={() => handleDelete(text, record)}>
-          Delete
-        </Button>
+        <Popconfirm
+          title="Bạn có chắc chắn xóa không?"
+          onConfirm={() => confirm(text, record)}
+          onCancel={cancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="primary">Delete</Button>
+        </Popconfirm>
       ),
     },
     {
