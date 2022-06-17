@@ -27,39 +27,43 @@ function EditProduct({
     const formDataUploadFile = new FormData();
     formDataUploadFile.append("file", image[0]);
     const postImages = async () => {
+      var test = {
+        name: name,
+        status: 1,
+        price: price,
+        inventory: inventory,
+        image: product.image,
+      };
       try {
-        const responseUploadFile = await axios.post(
-          "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
-          formDataUploadFile
-        );
-        if (responseUploadFile.status === 200) {
-          console.log(responseUploadFile.data.message);
-          const responseInsertProduct = await axios.put(
-            `https://shoesstation.herokuapp.com/api/products/${product.id}`,
-            {
-              name: name,
-              status: 1,
-              price: price,
-              inventory: inventory,
-              image: responseUploadFile.data.message,
-            }
+        if (image.length !== 0) {
+          const responseUploadFile = await axios.post(
+            "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+            formDataUploadFile
           );
-          setValue("name", "");
-          setValue("price", "");
-          setValue("inventory", "");
-          setValue("image", "");
-          success();
-          getProducts();
-          setToggleEdit(false);
-        } else {
-          error();
+          test = { ...test, image: responseUploadFile.data.message };
         }
+        const responseInsertProduct = await axios.put(
+          `https://shoesstation.herokuapp.com/api/products/${product.id}`,
+          test
+        );
+        setValue("name", "");
+        setValue("price", "");
+        setValue("inventory", "");
+        setValue("image", "");
+        success();
+        getProducts();
+        setToggleEdit(false);
       } catch (e) {
         error();
       }
     };
     postImages();
   };
+  console.log(product);
+  setValue("name", product !== undefined ? product.name : "");
+  setValue("price", product !== undefined ? product.price : "");
+  setValue("inventory", product !== undefined ? product.inventory : "");
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center">
@@ -68,7 +72,7 @@ function EditProduct({
           className="border-2 w-10/12 ml-10 px-4 py-1 rounded"
           placeholder="Tên sản phẩm"
           {...register("name")}
-          defaultValue={product !== undefined ? product.name : ""}
+          // defaultValue={product !== undefined ? product.name : ""}
         />
       </div>
 
@@ -77,7 +81,7 @@ function EditProduct({
         <input
           className="border-2 w-10/12 ml-10 px-4 py-1 rounded"
           placeholder="Giá sản phẩm"
-          defaultValue={product !== undefined ? product.price : ""}
+          // defaultValue={product !== undefined ? product.price : ""}
           {...register("price")}
         />
       </div>
@@ -88,7 +92,7 @@ function EditProduct({
           className="border-2 w-10/12 ml-20 px-4 py-1 rounded"
           placeholder="Tồn kho"
           {...register("inventory")}
-          defaultValue={product !== undefined ? product.inventory : ""}
+          // defaultValue={product !== undefined ? product.inventory : ""}
         />
       </div>
 

@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import Select from "react-select";
-import { Form, Input, Button, Space } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Form, Input, Button, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { profileEmployeeState } from "../Store/recoil";
 import { useRecoilState } from "recoil";
 
@@ -31,7 +30,9 @@ function CreateReceiveDocket(props) {
             }
           );
         }
+        message.success("Thêm phiếu nhập thành công!");
       } catch (error) {
+        message.warning("Thêm phiếu nhập lỗi!");
         console.log(error);
       }
     };
@@ -102,7 +103,7 @@ function CreateReceiveDocket(props) {
         autoComplete="off"
       >
         <div className="flex">
-          <h3 className="mr-5">supplierName: </h3>
+          <h3 className="mr-5">Nhà cung cấp: </h3>
           <Form.Item
             name="supplierName"
             rules={[{ required: true }]}
@@ -126,7 +127,7 @@ function CreateReceiveDocket(props) {
                   </div>
                   <hr className=" mb-4" />
                   <div className="flex">
-                    <h3 className="text-[16px] mr-4">Nhập số lượng:</h3>
+                    <h3 className="text-[16px] mr-[107px]">Nhập số lượng:</h3>
                     <Form.Item
                       {...restField}
                       className="flex-1"
@@ -142,7 +143,7 @@ function CreateReceiveDocket(props) {
                     </Form.Item>
                   </div>
                   <div className="form-group flex ">
-                    <h3 className="text-[16px] mr-14">Nhập giá:</h3>
+                    <h3 className="text-[16px] mr-[148px]">Nhập giá:</h3>
                     <Form.Item
                       className="flex-1"
                       {...restField}
@@ -158,7 +159,7 @@ function CreateReceiveDocket(props) {
                     </Form.Item>
                   </div>
                   <div className="flex">
-                    <h3>Chọn sản phẩm :</h3>
+                    <h3 className="text-[16px]">Chọn sản phẩm :</h3>
                     <Form.Item
                       className="flex-1"
                       {...restField}
@@ -166,7 +167,7 @@ function CreateReceiveDocket(props) {
                       rules={[
                         {
                           required: true,
-                          message: "Missing price",
+                          message: "Missing product",
                         },
                       ]}
                     >
@@ -180,16 +181,18 @@ function CreateReceiveDocket(props) {
                   </div>
                 </div>
               ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  Add field
-                </Button>
-              </Form.Item>
+              <div className="flex justify-center">
+                <Form.Item className="w-32">
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    block
+                    icon={<PlusOutlined />}
+                  >
+                    Add field
+                  </Button>
+                </Form.Item>
+              </div>
             </>
           )}
         </Form.List>

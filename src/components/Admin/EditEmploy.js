@@ -22,43 +22,49 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
     const formDataUploadFile = new FormData();
     formDataUploadFile.append("file", avatar[0]);
     const postImages = async () => {
+      const test = {
+        fullName: fullName,
+        status: 1,
+        address: address,
+        dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber,
+        password: password,
+        avatar: employee.avatar,
+      };
       try {
-        const responseUploadFile = await axios.post(
-          "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
-          formDataUploadFile
-        );
-        if (responseUploadFile.status === 200) {
-          console.log(responseUploadFile.data.message);
-          const responseInsertProduct = await axios.put(
-            `https://shoesstation.herokuapp.com/api/employees/${employee.id}`,
-            {
-              fullName: fullName,
-              status: 1,
-              address: address,
-              dateOfBirth: dateOfBirth,
-              phoneNumber: phoneNumber,
-              password: password,
-              avatar: responseUploadFile.data.message,
-            }
+        if (avatar.length !== 0) {
+          const responseUploadFile = await axios.post(
+            "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+            formDataUploadFile
           );
-          setValue("fullName", "");
-          setValue("address", "");
-          setValue("dateOfBirth", "");
-          setValue("password", "");
-          setValue("phoneNumber", "");
-          setValue("avatar", "");
-          getEmployees();
-          success();
-          setToggleEdit(false);
-        } else {
-          error();
+          test = { ...test, avatar: responseUploadFile.data.message };
         }
+        const responseInsertProduct = await axios.put(
+          `https://shoesstation.herokuapp.com/api/employees/${employee.id}`,
+          test
+        );
+        setValue("fullName", "");
+        setValue("address", "");
+        setValue("dateOfBirth", "");
+        setValue("password", "");
+        setValue("phoneNumber", "");
+        setValue("avatar", "");
+        getEmployees();
+        success();
+        setToggleEdit(false);
       } catch (e) {
         error();
       }
     };
     postImages();
   };
+
+  setValue("fullName", employee !== undefined ? employee.fullName : "");
+  setValue("address", employee !== undefined ? employee.address : "");
+  setValue("dateOfBirth", employee !== undefined ? employee.dateOfBirth : "");
+  setValue("password", employee !== undefined ? employee.password : "");
+  setValue("phoneNumber", employee !== undefined ? employee.phoneNumber : "");
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -67,7 +73,7 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
           <input
             className="border-2 w-10/12 ml-8 px-4 py-1 rounded"
             placeholder="Tên nhân viên"
-            defaultValue={employee !== undefined ? employee.fullName : ""}
+            // defaultValue={employee !== undefined ? employee.fullName : ""}
             {...register("fullName")}
           />
         </div>
@@ -77,7 +83,7 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
           <input
             className="border-2 w-10/12 ml-20 px-4 py-1 rounded"
             placeholder="Địa chỉ"
-            defaultValue={employee !== undefined ? employee.address : ""}
+            // defaultValue={employee !== undefined ? employee.address : ""}
             {...register("address")}
           />
         </div>
@@ -88,7 +94,7 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
             type="date"
             className="border-2 w-10/12 ml-14 px-4 py-1 rounded"
             placeholder="Ngày sinh"
-            defaultValue={employee !== undefined ? employee.dateOfBirth : ""}
+            // defaultValue={employee !== undefined ? employee.dateOfBirth : ""}
             {...register("dateOfBirth")}
           />
         </div>
@@ -98,7 +104,7 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
           <input
             className="border-2 w-10/12 ml-14 px-4 py-1 rounded"
             placeholder="Mật khẩu"
-            defaultValue={employee !== undefined ? employee.password : ""}
+            // defaultValue={employee !== undefined ? employee.password : ""}
             {...register("password")}
           />
         </div>
@@ -107,7 +113,7 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
           <h3 className="text-[16px]">Số điện thoại:</h3>
           <input
             className="border-2 w-10/12 ml-8 px-4 py-1 rounded"
-            defaultValue={employee !== undefined ? employee.phoneNumber : ""}
+            // defaultValue={employee !== undefined ? employee.phoneNumber : ""}
             placeholder="Số điện thoại"
             {...register("phoneNumber")}
           />

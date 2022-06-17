@@ -23,35 +23,34 @@ function EditCustomer({ customer, getCustomers, setToggleEdit }) {
     const formDataUploadFile = new FormData();
     formDataUploadFile.append("file", avatar[0]);
     const postImages = async () => {
+      const test = {
+        fullName: fullName,
+        status: 1,
+        address: address,
+        phoneNumber: phoneNumber,
+        email: email,
+        avatar: customer.avatar,
+      };
       try {
-        const responseUploadFile = await axios.post(
-          "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
-          formDataUploadFile
-        );
-        if (responseUploadFile.status === 200) {
-          console.log(responseUploadFile.data.message);
-          const responseInsertCustomers = await axios.put(
-            `https://shoesstation.herokuapp.com/api/customers/${customer.id}`,
-            {
-              fullName: fullName,
-              status: 1,
-              address: address,
-              phoneNumber: phoneNumber,
-              email: email,
-              avatar: responseUploadFile.data.message,
-            }
+        if (avatar.length !== 0) {
+          const responseUploadFile = await axios.post(
+            "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+            formDataUploadFile
           );
-          setValue("fullName", "");
-          setValue("address", "");
-          setValue("email", "");
-          setValue("phoneNumber", "");
-          setValue("avatar", "");
-          getCustomers();
-          success();
-          setToggleEdit();
-        } else {
-          error();
+          test = { ...test, avatar: responseUploadFile.data.message };
         }
+        const responseInsertCustomers = await axios.put(
+          `https://shoesstation.herokuapp.com/api/customers/${customer.id}`,
+          test
+        );
+        setValue("fullName", "");
+        setValue("address", "");
+        setValue("email", "");
+        setValue("phoneNumber", "");
+        setValue("avatar", "");
+        getCustomers();
+        success();
+        setToggleEdit();
       } catch (e) {
         error();
       }

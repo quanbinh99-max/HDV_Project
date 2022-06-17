@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
-import { Form, Input, Button, Space } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { profileEmployeeState } from "../Store/recoil";
 import { useRecoilState } from "recoil";
@@ -31,8 +31,9 @@ function CreateReceiveDocket(props) {
             }
           );
         }
+        message.success("Thêm phiếu xuất thành công");
       } catch (error) {
-        console.log(error);
+        message.warning("Thêm phiếu xuất thất bại.Vượt quá số lượng tồn kho");
       }
     };
     postReceiveDocket();
