@@ -208,16 +208,18 @@ function CreateReceiveDocket(props) {
                   </div>
                 </div>
               ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  Add field
-                </Button>
-              </Form.Item>
+              <div className="flex justify-center">
+                <Form.Item className="w-32">
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    block
+                    icon={<PlusOutlined />}
+                  >
+                    Add field
+                  </Button>
+                </Form.Item>
+              </div>
             </>
           )}
         </Form.List>
