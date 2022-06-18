@@ -15,9 +15,7 @@ function Products(props) {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get(
-        "https://shoesstation.herokuapp.com/api/products"
-      );
+      const response = await axios.get("http://localhost:8080/api/products");
       setProducts(response.data);
     } catch (error) {
       console.log(error);
@@ -31,7 +29,7 @@ function Products(props) {
     const deleteProducts = async () => {
       try {
         const response = await axios.put(
-          `https://shoesstation.herokuapp.com/api/products/${record.id}`,
+          `http://localhost:8080/api/products/${record.id}`,
           { ...record, status: 0 }
         );
         getProducts();
@@ -87,6 +85,7 @@ function Products(props) {
       title: "Giá",
       dataIndex: "price",
       key: "price",
+      render: (text) => <p>{`${text.toLocaleString()} VNĐ`}</p>,
     },
     {
       title: "Số lượng",

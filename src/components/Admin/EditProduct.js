@@ -37,13 +37,13 @@ function EditProduct({
       try {
         if (image.length !== 0) {
           const responseUploadFile = await axios.post(
-            "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+            "http://localhost:8080/api/cloudDinary/fileUpload",
             formDataUploadFile
           );
           test = { ...test, image: responseUploadFile.data.message };
         }
         const responseInsertProduct = await axios.put(
-          `https://shoesstation.herokuapp.com/api/products/${product.id}`,
+          `http://localhost:8080/api/products/${product.id}`,
           test
         );
         setValue("name", "");

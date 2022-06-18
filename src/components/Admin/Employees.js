@@ -18,9 +18,7 @@ function Products(props) {
   const [toggleEdit, setToggleEdit] = useState(false);
   const getEmployees = async () => {
     try {
-      const response = await axios.get(
-        "https://shoesstation.herokuapp.com/api/employees"
-      );
+      const response = await axios.get("http://localhost:8080/api/employees");
       setEmployees(response.data);
     } catch (error) {
       console.log(error);
@@ -45,7 +43,7 @@ function Products(props) {
     const deleteEmployee = async () => {
       try {
         const response = await axios.put(
-          `https://shoesstation.herokuapp.com/api/employees/${record.id}`,
+          `http://localhost:8080/api/employees/${record.id}`,
           { ...record, status: 0 }
         );
         getEmployees();

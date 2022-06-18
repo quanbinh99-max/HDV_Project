@@ -34,13 +34,13 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
       try {
         if (avatar.length !== 0) {
           const responseUploadFile = await axios.post(
-            "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+            "http://localhost:8080/api/cloudDinary/fileUpload",
             formDataUploadFile
           );
           test = { ...test, avatar: responseUploadFile.data.message };
         }
         const responseInsertProduct = await axios.put(
-          `https://shoesstation.herokuapp.com/api/employees/${employee.id}`,
+          `http://localhost:8080/api/employees/${employee.id}`,
           test
         );
         setValue("fullName", "");

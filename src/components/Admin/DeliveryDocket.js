@@ -14,7 +14,7 @@ function CreateReceiveDocket(props) {
     const postReceiveDocket = async () => {
       try {
         const response = await axios.post(
-          "https://shoesstation.herokuapp.com/api/deliveryDockets",
+          "http://localhost:8080/api/deliveryDockets",
           {
             customerId: selectedOptionCustoms.value,
             employeeId: profileEmployee.id,
@@ -23,7 +23,7 @@ function CreateReceiveDocket(props) {
         console.log(response);
         for (var i = 0; i < values.users.length; i++) {
           const responseDetails = await axios.post(
-            "https://shoesstation.herokuapp.com/api/deliveryDocketDetails",
+            "http://localhost:8080/api/deliveryDocketDetails",
             {
               ...values.users[i],
               productId: values.users[i].productId.value,
@@ -46,9 +46,7 @@ function CreateReceiveDocket(props) {
   useEffect(() => {
     const getEmployees = async () => {
       try {
-        const response = await axios.get(
-          "https://shoesstation.herokuapp.com/api/employees"
-        );
+        const response = await axios.get("http://localhost:8080/api/employees");
         setEmployees(response.data);
       } catch (e) {
         console.error(e);
@@ -70,9 +68,7 @@ function CreateReceiveDocket(props) {
   useEffect(() => {
     const getCustomers = async () => {
       try {
-        const response = await axios.get(
-          "https://shoesstation.herokuapp.com/api/customers"
-        );
+        const response = await axios.get("http://localhost:8080/api/customers");
         setCustomers(response.data);
       } catch (e) {
         console.error(e);
@@ -96,9 +92,7 @@ function CreateReceiveDocket(props) {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await axios.get(
-          "https://shoesstation.herokuapp.com/api/products"
-        );
+        const response = await axios.get("http://localhost:8080/api/products");
         setProducts(response.data);
       } catch (e) {
         console.error(e);

@@ -51,6 +51,7 @@ function CustomerDeliveryDocketDetails(props) {
       title: "Giá",
       dataIndex: "price",
       key: "price",
+      render: (text) => <p>{`${text.toLocaleString()} VNĐ`}</p>,
     },
     {
       title: "Tên sản phẩm",

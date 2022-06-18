@@ -24,9 +24,7 @@ function Customers(props) {
 
   const getCustomers = async () => {
     try {
-      const response = await axios.get(
-        "https://shoesstation.herokuapp.com/api/customers"
-      );
+      const response = await axios.get("http://localhost:8080/api/customers");
       setCustomers(response.data);
     } catch (error) {
       console.log(error);
@@ -41,7 +39,7 @@ function Customers(props) {
     const deleteCustomer = async () => {
       try {
         const response = await axios.put(
-          `https://shoesstation.herokuapp.com/api/customers/${record.id}`,
+          `http://localhost:8080/api/customers/${record.id}`,
           { ...record, status: 0 }
         );
         getCustomers();

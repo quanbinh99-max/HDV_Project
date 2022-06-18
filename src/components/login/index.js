@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { message } from "antd";
+import { message, Drawer } from "antd";
 import { useRecoilState } from "recoil";
 import { key } from "../Store/recoil";
 import { profileEmployeeState } from "../Store/recoil";
 import "antd/dist/antd.css";
+import Register from "../Admin/Register";
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
   const [keyValue, setKeyValue] = useRecoilState(key);
   const [profileEmployee, setProfileEmployee] =
     useRecoilState(profileEmployeeState);
+  const [show, setShow] = useState(false);
+
   let navigate = useNavigate();
   const {
     register,
@@ -32,7 +35,7 @@ function Login(props) {
     const login = async () => {
       try {
         const response = await axios.get(
-          `https://shoesstation.herokuapp.com/api/employees/login?phoneNumber=${data.username}&password=${data.password}`
+          `http://localhost:8080/api/employees/login?phoneNumber=${data.username}&password=${data.password}`
         );
         if (response.status === 200) {
           setProfileEmployee(response.data);
@@ -83,6 +86,17 @@ function Login(props) {
                 {...register("password")}
               />
 
+              <h4>
+                Vui lòng đăng kí{" "}
+                <a
+                  onClick={() => {
+                    setShow(true);
+                  }}
+                >
+                  tại đây
+                </a>
+              </h4>
+
               <button
                 className="w-[100%] px-[12px] py-[6px] bg-[#1BB99A] text-white rounded-[4px] text-[16px] font-[400]"
                 onClick={handleSubmit}
@@ -93,6 +107,7 @@ function Login(props) {
           </div>
         </div>
       </div>
+      {show === true && <Register show={show} setShow={setShow}></Register>}
     </div>
   );
 }

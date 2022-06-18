@@ -25,13 +25,13 @@ function AddCustomer({ getCustomers }) {
     const postImages = async () => {
       try {
         const responseUploadFile = await axios.post(
-          "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+          "http://localhost:8080/api/cloudDinary/fileUpload",
           formDataUploadFile
         );
         if (responseUploadFile.status === 200) {
           console.log(responseUploadFile.data.message);
           const responseInsertCustomers = await axios.post(
-            "https://shoesstation.herokuapp.com/api/customers",
+            "http://localhost:8080/api/customers",
             {
               fullName: fullName,
               status: 1,

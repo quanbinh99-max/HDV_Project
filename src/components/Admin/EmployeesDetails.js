@@ -29,7 +29,7 @@ function EmployeeDetail(props) {
       const getEmployeeDetail = async () => {
         try {
           const response = await axios.get(
-            "https://shoesstation.herokuapp.com/api/employees"
+            "http://localhost:8080/api/employees"
           );
           setdeliveryDocket(response.data[idEmployees].deliveryDockets);
         } catch (error) {
@@ -43,9 +43,7 @@ function EmployeeDetail(props) {
   useEffect(() => {
     const getCustomers = async () => {
       try {
-        const response = await axios.get(
-          "https://shoesstation.herokuapp.com/api/customers"
-        );
+        const response = await axios.get("http://localhost:8080/api/customers");
         setCustomers(response.data);
       } catch (error) {
         console.log(error);
@@ -92,7 +90,7 @@ function EmployeeDetail(props) {
       const getReceivedDockets = async () => {
         try {
           const response = await axios.get(
-            "https://shoesstation.herokuapp.com/api/employees"
+            "http://localhost:8080/api/employees"
           );
           setReceivedDocket(response.data[idEmployees].receivedDockets);
         } catch (error) {

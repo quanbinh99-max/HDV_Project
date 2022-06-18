@@ -24,13 +24,13 @@ function AddProduct({ products, setProducts }) {
     const postImages = async () => {
       try {
         const responseUploadFile = await axios.post(
-          "https://shoesstation.herokuapp.com/api/cloudDinary/fileUpload",
+          "http://localhost:8080/api/cloudDinary/fileUpload",
           formDataUploadFile
         );
         if (responseUploadFile.status === 200) {
           console.log(responseUploadFile.data.message);
           const responseInsertProduct = await axios.post(
-            "https://shoesstation.herokuapp.com/api/products",
+            "http://localhost:8080/api/products",
             {
               name: name,
               status: 1,
