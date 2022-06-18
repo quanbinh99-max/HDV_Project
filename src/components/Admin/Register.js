@@ -5,18 +5,35 @@ import { message, Drawer } from "antd";
 
 function Register({ show, setShow }) {
   const [visible, setVisible] = useState(true);
-  const [placement, setPlacement] = useState("top");
+  const [placement, setPlacement] = useState("right");
 
   const onClose = () => {
     setVisible(false);
     setShow(false);
   };
 
+  // const ProfilePasswordSchema = yup.object().shape({
+  //   password: yup
+  //     .string()
+  //     .required(("error.field-is-required", { field: "password" })),
+  //   passwordConfirm: yup
+  //     .string()
+  //     .oneOf(
+  //       [yup.ref("password"), null],
+  //       "error.password-confirmation-not-match"
+  //     )
+  //     .required(("error.field-is-required", { field: "password-confirm" })),
+  //   currentPassword: yup
+  //     .string()
+  //     .required(("error.field-is-required", { field: "current-password" })),
+  // });
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    setError,
     formState: { errors },
   } = useForm();
 
@@ -24,59 +41,51 @@ function Register({ show, setShow }) {
     message.success("Đăng kí thành công");
   };
 
-  const error = () => {
-    message.error("Đăng kí thất bại");
-  };
-
   const onSubmit = (data) => {
-    const { avatar, fullName, address, dateOfBirth, phoneNumber, password } =
-      data;
-    const formDataUploadFile = new FormData();
-    formDataUploadFile.append("file", avatar[0]);
-    const postImages = async () => {
-      try {
-        const responseUploadFile = await axios.post(
-          "http://localhost:8080/api/cloudDinary/fileUpload",
-          formDataUploadFile
-        );
-        if (responseUploadFile.status === 200) {
-          console.log(responseUploadFile.data.message);
+    const {
+      avatar,
+      fullName,
+      address,
+      phoneNumber,
+      password,
+      confirm_password,
+    } = data;
+    if (confirm_password === password) {
+      const postImages = async () => {
+        try {
           const responseInsertProduct = await axios.post(
             "http://localhost:8080/api/employees",
             {
               fullName: fullName,
               status: 1,
               address: address,
-              dateOfBirth: dateOfBirth,
               phoneNumber: phoneNumber,
               password: password,
-              avatar: responseUploadFile.data.message,
             }
           );
           setValue("fullName", "");
           setValue("address", "");
-          setValue("dateOfBirth", "");
           setValue("password", "");
           setValue("phoneNumber", "");
           setValue("avatar", "");
           success();
           setShow(false);
           setVisible(false);
-        } else {
-          error();
+        } catch (e) {
+          message.error("Số điện thoại bị trùng!");
         }
-      } catch (e) {
-        error();
-      }
-    };
-    postImages();
+      };
+      postImages();
+    } else {
+      message.error("Mật khẩu chưa trùng khớp !");
+    }
   };
 
   return (
     <div>
       {" "}
       <Drawer
-        title="Basic Drawer"
+        title="Đăng kí"
         placement={placement}
         closable={false}
         onClose={onClose}
@@ -95,7 +104,7 @@ function Register({ show, setShow }) {
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="fullname"
                 placeholder="Full Name"
-                {...register("fullName")}
+                {...register("fullName", { required: true })}
               />
 
               <input
@@ -103,14 +112,15 @@ function Register({ show, setShow }) {
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="address"
                 placeholder="Address"
-                {...register("address")}
+                {...register("address", { required: true })}
               />
 
               <input
-                type="date"
-                className="border-2 w-full  px-4 py-1 rounded mb-4"
-                placeholder="Ngày sinh"
-                {...register("dateOfBirth")}
+                type="text"
+                class="block border border-grey-light w-full p-3 rounded mb-4"
+                name="phoneNumber"
+                placeholder="phoneNumber"
+                {...register("phoneNumber", { required: true })}
               />
 
               <input
@@ -118,29 +128,15 @@ function Register({ show, setShow }) {
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="password"
                 placeholder="Password"
-                {...register("password")}
+                {...register("password", { required: true })}
               />
               <input
                 type="password"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="confirm_password"
                 placeholder="Confirm Password"
+                {...register("confirm_password", { required: true })}
               />
-
-              <div className="flex items-center mt-4 justify-center mb-4">
-                <input
-                  className="border-2  px-4 py-1 rounded hidden"
-                  type="file"
-                  {...register("avatar")}
-                  id="files"
-                />
-                <label
-                  for="files"
-                  className="border-2 bg-blue-400 rounded px-4 py-2 "
-                >
-                  Chọn hình đại diện
-                </label>
-              </div>
 
               <button
                 type="submit"

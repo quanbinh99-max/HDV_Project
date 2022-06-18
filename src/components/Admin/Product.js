@@ -71,11 +71,7 @@ function Products(props) {
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-    },
+
     {
       title: "Ngày",
       dataIndex: "createdAt",

@@ -5,10 +5,10 @@ import { message, Button, Space } from "antd";
 
 function AddProduct({ products, setProducts }) {
   const success = () => {
-    message.success("Sửa thành công");
+    message.success("Thêm thành công");
   };
   const error = () => {
-    message.error("Sửa thất bại");
+    message.error("Thêm thất bại");
   };
   const {
     register,
@@ -61,7 +61,7 @@ function AddProduct({ products, setProducts }) {
         <input
           className="border-2 w-10/12 ml-10 px-4 py-1 rounded"
           placeholder="Tên sản phẩm"
-          {...register("name")}
+          {...register("name", { required: true })}
         />
       </div>
 
@@ -70,7 +70,7 @@ function AddProduct({ products, setProducts }) {
         <input
           className="border-2 w-10/12 ml-10 px-4 py-1 rounded"
           placeholder="Giá sản phẩm"
-          {...register("price")}
+          {...register("price", { required: true })}
         />
       </div>
 
@@ -79,7 +79,7 @@ function AddProduct({ products, setProducts }) {
         <input
           className="border-2 w-10/12 ml-20 px-4 py-1 rounded"
           placeholder="Tồn kho"
-          {...register("inventory")}
+          {...register("inventory", { required: true })}
         />
       </div>
 
@@ -88,7 +88,7 @@ function AddProduct({ products, setProducts }) {
         <input
           className="border-2 w-10/12 ml-[74px] px-4 py-1 rounded"
           type="file"
-          {...register("image")}
+          {...register("image", { required: true })}
         />
       </div>
 

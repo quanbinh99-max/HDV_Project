@@ -52,7 +52,7 @@ function AddCustomer({ getCustomers }) {
           error();
         }
       } catch (e) {
-        error();
+        message.error("Số điện thoại bị trùng !");
       }
     };
     postImages();
@@ -65,7 +65,7 @@ function AddCustomer({ getCustomers }) {
           <input
             className="border-2 w-10/12 ml-4 px-4 py-1 rounded"
             placeholder="Tên nhân viên"
-            {...register("fullName")}
+            {...register("fullName", { required: true })}
           />
         </div>
 
@@ -74,7 +74,7 @@ function AddCustomer({ getCustomers }) {
           <input
             className="border-2 w-10/12 ml-20 px-4 py-1 rounded"
             placeholder="Địa chỉ"
-            {...register("address")}
+            {...register("address", { required: true })}
           />
         </div>
 
@@ -83,7 +83,7 @@ function AddCustomer({ getCustomers }) {
           <input
             className="border-2 w-10/12 ml-24 px-4 py-1 rounded"
             placeholder="Số điện thoại"
-            {...register("phoneNumber")}
+            {...register("phoneNumber", { required: true })}
           />
         </div>
 
@@ -92,7 +92,7 @@ function AddCustomer({ getCustomers }) {
           <input
             className="border-2 w-10/12 ml-[90px] px-4 py-1 rounded"
             placeholder="Email"
-            {...register("email")}
+            {...register("email", { required: true })}
           />
         </div>
 
@@ -101,7 +101,7 @@ function AddCustomer({ getCustomers }) {
           <input
             className="border-2 w-10/12 ml-[60px] px-4 py-1 rounded"
             type="file"
-            {...register("avatar")}
+            {...register("avatar", { required: true })}
           />
         </div>
 

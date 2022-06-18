@@ -140,7 +140,7 @@ function CreateReceiveDocket(props) {
               {fields.map(({ key, name, ...restField }, index) => (
                 <div>
                   <div className="flex justify-between px-4">
-                    <span>{`Phiếu ${index + 1}`}</span>
+                    <span>{`Sản phẩm ${index + 1}`}</span>
                     <i
                       className="fa-solid fa-trash-can text-red-500"
                       onClick={() => remove(name)}
@@ -160,7 +160,7 @@ function CreateReceiveDocket(props) {
                         },
                       ]}
                     >
-                      <Input placeholder="Nhập Giá:" />
+                      <Input />
                     </Form.Item>
                   </div>
                   <div className="form-group flex ">
@@ -176,7 +176,7 @@ function CreateReceiveDocket(props) {
                         },
                       ]}
                     >
-                      <Input placeholder="Nhập giá:" />
+                      <Input />
                     </Form.Item>
                   </div>
                   <div className="flex">

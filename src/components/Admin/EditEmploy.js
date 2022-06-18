@@ -7,7 +7,7 @@ function EditEmployee({ getEmployees, employee, setToggleEdit }) {
     message.success("Sửa thành công");
   };
   const error = () => {
-    message.error("Sửa thất bại");
+    message.error("Số điện thoại bị trùng !");
   };
   const {
     register,
